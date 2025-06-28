@@ -1,5 +1,5 @@
 // Number Theory Study
-// Description: Useful functions for number theory problems 
+// Description: Useful functions for number theory problems
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -53,16 +53,50 @@ vector<ll> primeFactorization(ll x) {
     return pf;
 }
 
-// You can test the functions here if needed:
-// int main() {
-//     ll n = 36;
-//     vector<ll> divs = getDivs(n);
-//     cout << "Divisors of " << n << ": ";
-//     for (ll d : divs) cout << d << " ";
-//     cout << "\n";
-//     cout << n << (isPrime(n) ? " is Prime\n" : " is NOT Prime\n");
-//     vector<ll> pf = primeFactorization(n);
-//     cout << "Prime factors: ";
-//     for (ll f : pf) cout << f << " ";
-//     cout << "\n";
-// }
+// --------------------------------------------------
+// Optimized sieve for multiple queries
+// --------------------------------------------------
+const int N = 1e6 + 5;
+vector<bool> is_prime(N, true);
+vector<int> divs(N); // divs[i] = smallest prime factor of i
+
+// --------------------------------------------------
+// Function: sieve
+// Purpose: Fills is_prime[] and divs[] (smallest prime factors) in O(N log log N)
+// --------------------------------------------------
+void sieve() {
+    is_prime[0] = is_prime[1] = false;
+
+    for (int i = 2; i < N; ++i) {
+        if (is_prime[i]) {
+            divs[i] = i;
+            for (int j = i * 2; j < N; j += i) {
+                is_prime[j] = false;
+                if (divs[j] == 0) {
+                    divs[j] = i;
+                }
+            }
+        }
+    }
+
+    // Fill remaining numbers that are prime but > sqrt(N)
+    for (int i = 2; i < N; ++i) {
+        if (divs[i] == 0)
+            divs[i] = i;
+    }
+}
+
+// --------------------------------------------------
+// Function: primeFactorization (Sieve version)
+// Purpose: Returns prime factors of n using precomputed divs[]
+// Time Complexity: O(log n)
+// --------------------------------------------------
+vector<int> fastPrimeFactorization(int n) {
+    vector<int> factors;
+    while (n > 1) {
+        int prime = divs[n];
+        factors.push_back(prime);
+        n /= prime;
+    }
+    return factors;
+}
