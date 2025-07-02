@@ -87,7 +87,7 @@ void sieve() {
 }
 
 // --------------------------------------------------
-// Function: primeFactorization (Sieve version)
+// Function: fastPrimeFactorization
 // Purpose: Returns prime factors of n using precomputed divs[]
 // Time Complexity: O(log n)
 // --------------------------------------------------
@@ -99,4 +99,42 @@ vector<int> fastPrimeFactorization(int n) {
         n /= prime;
     }
     return factors;
+}
+
+// --------------------------------------------------
+// Function: multiply
+// Purpose: Multiply two big integers represented as strings
+// Time Complexity: O(n * m)
+// --------------------------------------------------
+string multiply(string a, string b) {
+    if (a == "0" || b == "0") return "0";
+
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+
+    vector<ll> res(a.size() + b.size(), 0);
+
+    for (int i = 0; i < b.size(); i++) {
+        for (int j = 0; j < a.size(); j++) {
+            res[i + j] += (b[i] - '0') * (a[j] - '0');
+        }
+    }
+
+    for (int i = 0; i < res.size(); i++) {
+        if (res[i] >= 10) {
+            res[i + 1] += res[i] / 10;
+            res[i] %= 10;
+        }
+    }
+
+    while (!res.empty() && res.back() == 0) {
+        res.pop_back();
+    }
+
+    reverse(res.begin(), res.end());
+
+    string ans;
+    for (auto d : res)
+        ans += (d + '0');
+    return ans;
 }
