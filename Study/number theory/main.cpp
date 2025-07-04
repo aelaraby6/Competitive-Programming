@@ -145,7 +145,7 @@ string multiply(string a, string b) {
 // Time Complexity: O(N log N)
 // Usage: divs[x] will contain all divisors of x
 // --------------------------------------------------
-const int N = 1e5;
+const int N = 1e6;
 
 vector<int> divs[N + 1];
 void pre() {
