@@ -138,3 +138,21 @@ string multiply(string a, string b) {
         ans += (d + '0');
     return ans;
 }
+
+// --------------------------------------------------
+// Function: pre
+// Purpose: Precomputes all divisors for numbers from 1 to N
+// Time Complexity: O(N log N)
+// Usage: divs[x] will contain all divisors of x
+// --------------------------------------------------
+const int N = 1e5;
+
+vector<int> divs[N + 1];
+void pre() {
+    for (int i = 1; i <= N; i++) {
+        for (int j = i; j <= N; j += i) {
+            divs[j].push_back(i);
+        }
+    }
+}
+
