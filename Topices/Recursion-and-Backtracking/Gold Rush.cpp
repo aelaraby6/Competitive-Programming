@@ -4,50 +4,37 @@ using namespace std;
 #define ll long long
 #define Fast ios::sync_with_stdio(false); cin.tie(nullptr);
 
-int N, M, X;
-vector<int> C;
-vector<vector<int>> A;
+int n,m;
+bool solve(int x) {
+    if (x < m) return false;
+    if (x == m) return true;
+    if (x % 3 != 0) return false;
 
-const int INF = 1e9;
+    return solve(x / 3) || solve(x / 3 * 2);
 
-
-int solve(int i, vector<int> level) {
-    if (i == N) {
-        for (int j = 0; j < M; j++)
-            if (level[j] < X) return INF;
-        return 0;
-    }
-
-    int res = solve(i + 1, level);
-
-    vector<int> new_level = level;
-
-    for (int j = 0; j < M; j++)
-        new_level[j] += A[i][j];
-
-    res = min(res, C[i] + solve(i + 1, new_level));
-
-    return res;
 }
 
 int main() {
     Fast;
 
-    cin >> N >> M >> X;
-    C.resize(N);
-    A.assign(N, vector<int>(M));
+    int t ; cin>>t;
 
-    for (int i = 0; i < N; i++) {
-        cin >> C[i];
-        for (int j = 0; j < M; j++) cin >> A[i][j];
+    while(t--) {
+        cin>>n>>m;
+
+        if (m > n) {
+            cout<<"No"<<endl;
+        }
+        else if (n == m) {
+            cout<<"Yes"<<endl;
+        }
+        else {
+            if (solve(n)) cout<<"Yes"<<endl;
+            else cout<<"No"<<endl;
+        }
+
+
     }
-
-    vector<int> level(M, 0);
-
-    int ans = solve(0, level);
-
-    if (ans >= INF) cout << -1;
-    else cout << ans;
 
     return 0;
 }
